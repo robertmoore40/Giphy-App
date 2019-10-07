@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Giphy List</title>
+  <style type="text/css">
+    button,
+    div,
+    form,
+    input {
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Chosen QueryTopic Search</h1>
+
+    <!-- Rendered Buttons will get Dumped Here  -->
+    <div id="buttons-view"></div>
+
+    <form id="chosenQueryTopic-form">
+      <label for="chosenQueryTopic-input">Add Button</label>
+      <input type="text" id="chosenQueryTopic-input">
+      <br>
+
+      <!-- Button triggers new chosenQueryTopic to be added -->
+      <input id="add-chosenQueryTopic" type="submit" value="Add a chosenQueryTopic, Yo!">
+    </form>
+    <button id="clearInputs">Clear Array</button>
+
+    <!-- chosenQueryTopics will Get Dumped Here -->
+    <div id="chosenQueryTopics-view"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+function clearArrayInputs () {
+  $("#buttons-view").empty();
+  queryTopicTopics.length = 0;
+  queryTopicTopics = [];
+}
+
+$("#clearInputs").on("click", function(){
+  $("#buttons-view").empty();
+  queryTopicTopics.length = 0;
+  queryTopic = [];
+  clearArrayInputs();
+  }
+
+)
+      // Initial array of chosenQueryTopics
+      var chosenQueryTopics = ["The Matrix", "The Notebook", "Mr. Nobody", "The Lion King"];
+
+      // displaychosenQueryTopicInfo function re-renders the HTML to display the appropriate content
+      function displaychosenQueryTopicInfo() {
+
+        var chosenQueryTopic = $(this).attr("data-name");
+        var queryURL = "https://www.omdbapi.com/?t=" + chosenQueryTopic + "&apikey=trilogy";
+
+        // Creating an AJAX call for the specific chosenQueryTopic button being clicked
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).then(function(response) {
+
+          // Creating a div to hold the chosenQueryTopic
+          var chosenQueryTopicDiv = $("<div class='chosenQueryTopic'>");
+
+          // Storing the rating data
+          var rating = response.Rated;
+
+          // Creating an element to have the rating displayed
+          var pOne = $("<p>").text("Rating: " + rating);
+
+          // Displaying the rating
+          chosenQueryTopicDiv.append(pOne);
+
+          // Storing the release year
+          var released = response.Released;
+
+          // Creating an element to hold the release year
+          var pTwo = $("<p>").text("Released: " + released);
+
+          // Displaying the release year
+          chosenQueryTopicDiv.append(pTwo);
+
+          // Storing the plot
+          var plot = response.Plot;
+
+          // Creating an element to hold the plot
+          var pThree = $("<p>").text("Plot: " + plot);
+
+          // Appending the plot
+          chosenQueryTopicDiv.append(pThree);
+
+          // Retrieving the URL for the image
+          var imgURL = response.Poster;
+
+          // Creating an element to hold the image
+          var image = $("<img>").attr("src", imgURL);
+
+          // Appending the image
+          chosenQueryTopicDiv.append(image);
+
+          // Putting the entire chosenQueryTopic above the previous chosenQueryTopics
+          $("#chosenQueryTopics-view").prepend(chosenQueryTopicDiv);
+        });
+
+      }
+
+      // Function for displaying chosenQueryTopic data
+      function renderButtons() {
+
+        // Deleting the chosenQueryTopics prior to adding new chosenQueryTopics
+        // (this is necessary otherwise you will have repeat buttons)
+        $("#buttons-view").empty();
+
+        // Looping through the array of chosenQueryTopics
+        for (var i = 0; i < chosenQueryTopics.length; i++) {
+
+          // Then dynamicaly generating buttons for each chosenQueryTopic in the array
+          // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+          var a = $("<button>");
+          // Adding a class of chosenQueryTopic-btn to our button
+          a.addClass("chosenQueryTopic-btn");
+          // Adding a data-attribute
+          a.attr("data-name", chosenQueryTopics[i]);
+          // Providing the initial button text
+          a.text(chosenQueryTopics[i]);
+          // Adding the button to the buttons-view div
+          $("#buttons-view").append(a);
+        }
+      }
+
+      // This function handles events where a chosenQueryTopic button is clicked
+      $("#add-chosenQueryTopic").on("click", function(event) {
+        event.preventDefault();
+        // This line grabs the input from the textbox
+        var chosenQueryTopic = $("#chosenQueryTopic-input").val().trim();
+
+        // Adding chosenQueryTopic from the textbox to our array
+        chosenQueryTopics.push(chosenQueryTopic);
+
+        // Calling renderButtons which handles the processing of our chosenQueryTopic array
+        renderButtons();
+      });
+
+      // Adding a click event listener to all elements with a class of "chosenQueryTopic-btn"
+      $(document).on("click", ".chosenQueryTopic-btn", displaychosenQueryTopicInfo);
+
+      // Calling the renderButtons function to display the intial buttons
+      renderButtons();
+    </script>
+  </div>
+</body>
+
+</html>
