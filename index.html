@@ -174,7 +174,10 @@ $("#add-queryElement").on("click", function(event) {
   renderButtons();
   console.log(queryTopic);
 
-  $("#queryElement-input").empty(); 
+  $("#queryElement-form").val("");
+  $("#queryElement-input").val("");
+ 
+  
 });
 
 // Calling the renderButtons function to display the initial list of queryTopic
