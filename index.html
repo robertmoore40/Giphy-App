@@ -32,46 +32,36 @@
       </div>
     <div class="container">
         <h1>Button Holder</h1>
-    
-        <!-- queryTopic will get dumped here -->
+<!-- queryTopic will get dumped here -->
         
-      
-  <div id="buttons-view"></div>
+<div id="buttons-view"></div>
   
   <!-- Buttons created artificially right here will work, buttons created dynamically will not, when placed in the buttons view ID -->
 
-  <button data-name="giraffe">giraffe</button>
-  <button data-name="elephant">elephant</button>
-  <button data-name="pokemon">pokemon</button>
-  <button data-name="test">test</button>
-  <button data-name="Tony Hawk">Tony Hawk</button>
-  <button data-name="bongos">bongos</button>
-  <button data-name="The george washington bridge">the george washington bridge</button>
+<button data-name="giraffe">giraffe</button>
+<button data-name="elephant">elephant</button>
+<button data-name="pokemon">pokemon</button>
+<button data-name="test">test</button>
+<button data-name="Tony Hawk">Tony Hawk</button>
+<button data-name="bongos">bongos</button>
+<button data-name="The george washington bridge">the george washington bridge</button>
 
-
-  <div class="secret-sauce">
-    
-  <button id="getUser" data-type="users">Get Users</button>
-  <button id="getTodo" data-type="todos">Get Todos</button>
-
-  </div>
-
-  <div class="container">
+<div class="container">
     <div id="outputArea"></div>
     <div id="gifs-appear-here"></div>
-  </div>
+</div>
 
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script>
+<script>
 
-// Class Activity Function
 
- // Adding click event listen listener to all buttons
+
+// Adding click event listen listener to all buttons
 //  $("button").on("click", function() {
-  $(document).on("click","button",function() {
-      // Grabbing and storing the data-name property value from the button
-      var query = $(this).attr("data-name");
+$(document).on("click","button",function() {
+// Grabbing and storing the data-name property value from the button
+var query = $(this).attr("data-name");
 
       // Constructing a queryURL using the query name
       var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
@@ -169,53 +159,6 @@ $("#add-queryElement").on("click", function(event) {
   renderButtons();
   console.log(queryTopic);
   $("#queryElement-input").val("");
-
-  $("#getUser").click(function() {
-      console.log(this.dataset.type)
-      getInfo(this.dataset.type)
-    })
-​
-    $("#getTodo").click(function() {
-      console.log(this.dataset.type)
-      getInfo(this.dataset.type)
-    })
-​
-    // Secret Sauce 
-    // Event will now be registered on dynamically loaded imgs
-    $(".container").on("click", ".img-small", function() {
-      console.log("clicked");
-      console.log($(this))
-      console.log($(this).attr("data-gif"))
-      console.log($(this).attr("data-toggle"));
-​
-      if ($(this).attr("data-toggle") === "false") {
-        $(this).attr("src", $(this).attr("data-gif"));
-        $(this).attr("data-toggle", true);
-      } else {
-        $(this).attr("src", $(this).attr("data-still"));
-        $(this).attr("data-toggle", false);
-      }
-    })
-​
-​
-    function genUsers(users) {
-      for (var i = 0; i < users.length; i++) {
-        console.log(users[i]);
-​
-        // This sets up the new user div
-        var $newUser = $("<div>").addClass("user");
-        // we create p tag with a class of user-info, text users loop 54-70
-        var $name = $("<p>").addClass("user-info").text(users[i].name);
-        var $email = $("<a>").attr("href", users[i].email).text("Email");
-        var $image = $("<img>")
-          .addClass("img-small")
-          .attr("src", "https://images.pexels.com/photos/1556991/pexels-photo-1556991.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260")
-          .attr("data-still", "https://images.pexels.com/photos/1556991/pexels-photo-1556991.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260")
-          .attr("data-gif", "https://images.pexels.com/photos/1543756/pexels-photo-1543756.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")
-          .attr("data-toggle", false)
-​
-        $newUser.append($name, $email, $image);
-        $("#outputArea").append($newUser)
  
   
 });
