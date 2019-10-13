@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Homework 6</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <style>
     .img-small {
@@ -23,15 +23,10 @@
         <h1 class="display-4">Giphy API Search</h1>
         <p class="lead">Homework Assignment 6</p>
         <hr class="my-4">
-        
         <p>Type in a search term to add a search button</p>
-        
         <label for="queryElement-input">Search Term</label>
-        
         <input type="text" id="queryElement-input">
-        
-        <input id="add-queryElement" type="submit" value="Query Giphy Database">
-
+        <input id="add-queryElement" type="submit" value="Add Search Element">
         <button id="clearInputs">Clear Array</button>
           
       </div>
@@ -39,80 +34,80 @@
         <h1>Button Holder</h1>
     
         <!-- queryTopic will get dumped here -->
-        <div id="buttons-view"></div>
-        <form id="queryElement-form">
-          
-          <br>
-    
-          <!-- Button triggers new queryElement to be added -->
-    
-          
-        </form>
+        
+      
+  <div id="buttons-view"></div>
+  
+  <!-- Buttons created artificially right here will work, buttons created dynamically will not, when placed in the buttons view ID -->
 
-  <button id="getUser" data-type="users">Get Users</button>
-  <button id="getTodo" data-type="todos">Get Todos</button>
-  <button id="button2" data-type="button2">Test Button</button>
+  <button data-name="giraffe">giraffe</button>
+  <button data-name="elephant">elephant</button>
+  <button data-name="pokemon">pokemon</button>
+  <button data-name="test">test</button>
+  <button data-name="Tony Hawk">Tony Hawk</button>
+  <button data-name="bongos">bongos</button>
+  <button data-name="The george washington bridge">the george washington bridge</button>
+
 
   <div class="container">
     <div id="outputArea"></div>
+    <div id="gifs-appear-here"></div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script>
 
-// TEST FUNCTION
+// Class Activity Function
 
-function displayqueryElementInfo() {
+ // Adding click event listen listener to all buttons
+//  $("button").on("click", function() {
+  $(document).on("click","button",function() {
+      // Grabbing and storing the data-name property value from the button
+      var query = $(this).attr("data-name");
 
-var queryElement = $(this).attr("data-name");
-var queryURL = "https://www.omdbapi.com/?t=" + queryElement + "&apikey=trilogy";
+      // Constructing a queryURL using the query name
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        query + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
 
-// Creates AJAX call for the specific queryElement button being clicked
-$.ajax({
-  url: queryURL,
-  method: "GET"
-}).then(function(response) {
-  console.log(response);
-  // peterAdvice = response;
-  // Creates a div to hold the queryElement
-  
-  // Retrieves the Rating Data
-  // Creates an element to have the rating displayed
+      // Performing an AJAX request with the queryURL
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        // After data comes back from the request
+        .then(function(response) {
+          console.log(queryURL);
 
-  console.log(response.Ratings[0]);
-  var ratings = response.Ratings[0];
-  $("#queryElementDataDump").append("Rating is " + ratings );
+          console.log(response);
+          // storing the data from the AJAX request in the results variable
+          var results = response.data;
 
-  // Retrieves the release year
-  
-  console.log(response.Released);
-  var released = response.Released;
-  // Creates an element to hold the release year
+          // Looping through each result item
+          for (var i = 0; i < results.length; i++) {
 
-  $("#queryElementDataDump").append("Released " + released );
+            // Creating and storing a div tag
+            var queryDiv = $("<div>");
 
+            // Creating a paragraph tag with the result item's rating
+            var p = $("<p>").text("Rating: " + results[i].rating);
 
-  // Displays the release year
-  // Retrieves the plot
+            // Creating and storing an image tag
+            var queryImage = $("<img>");
+            // Setting the src attribute of the image to a property pulled off the result item
+            queryImage.attr("src", results[i].images.fixed_height.url);
 
-  console.log(response.Plot);
-  var plot = response.Plot;
+            // Appending the paragraph and image tag to the queryDiv
+            queryDiv.append(p);
+            queryDiv.append(queryImage);
 
-  $("#queryElementDataDump").append("Plot " + plot );
+            // Prependng the queryDiv to the HTML page in the "#gifs-appear-here" div
+            $("#gifs-appear-here").prepend(queryDiv);
+          }
+        });
+    });
 
-
-  // Creates an element to hold the plot
-  // Appends the plot
-  // Creates an element to hold the image
-  // Appends the image
-  // Puts the entire queryElement above the previous queryElements.
-});
-
-}
-
-
-// TEST FUNCTION ENDS
+// End Class Function
 
 
 function clearArrayInputs () {
@@ -158,99 +153,18 @@ $("#add-queryElement").on("click", function(event) {
   // "Enter" instead of clicking the button if desired
   
   event.preventDefault();
-
   // Write code to grab the text the user types into the input field
-
   var queryElement = $("#queryElement-input").val().trim();
-  
-
   // Write code to add the new queryElement into the queryElements array
-
   queryTopic.push(queryElement);
   console.log(queryTopic);
-
-
   // The renderButtons function is called, rendering the list of queryElement buttons
   renderButtons();
   console.log(queryTopic);
-
-  $("#queryElement-form").val("");
   $("#queryElement-input").val("");
  
   
 });
-
-// Calling the renderButtons function to display the initial list of queryTopic
-renderButtons();
-
-
-
-    var baseUrl = 'https://jsonplaceholder.typicode.com';
-    var api_key = "12341234123412341"
-
-    function getInfo(type) {
-      console.log(type)
-
-      $.ajax(baseUrl + "/" + type, { method: "GET" })
-        .then(function(users) {
-          console.log(users);
-          genUsers(users)
-
-        })
-        .catch(function(err) {
-          console.log(err)
-        })
-    }
-
-    $("#getUser").click(function() {
-      console.log(this.dataset.type)
-      getInfo(this.dataset.type)
-    })
-
-    $("#getTodo").click(function() {
-      console.log(this.dataset.type)
-      getInfo(this.dataset.type)
-    })
-
-    // Secret Sauce 
-    // Event will now be registered on dynamically loaded imgs
-    $(".container").on("click", ".img-small", function() {
-      console.log("clicked");
-      console.log($(this))
-      console.log($(this).attr("data-gif"))
-      console.log($(this).attr("data-toggle"));
-
-      if ($(this).attr("data-toggle") === "false") {
-        $(this).attr("src", $(this).attr("data-gif"));
-        $(this).attr("data-toggle", true);
-      } else {
-        $(this).attr("src", $(this).attr("data-still"));
-        $(this).attr("data-toggle", false);
-      }
-    })
-
-
-    function genUsers(users) {
-      for (var i = 0; i < users.length; i++) {
-        console.log(users[i]);
-
-        // This sets up the new user div
-        var $newUser = $("<div>").addClass("user");
-        // we create p tag with a class of user-info, text users loop 54-70
-        var $name = $("<p>").addClass("user-info").text(users[i].name);
-        var $email = $("<a>").attr("href", users[i].email).text("Email");
-        var $image = $("<img>")
-          .addClass("img-small")
-          .attr("src", "https://images.pexels.com/photos/1556991/pexels-photo-1556991.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260")
-          .attr("data-still", "https://images.pexels.com/photos/1556991/pexels-photo-1556991.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260")
-          .attr("data-gif", "https://images.pexels.com/photos/1543756/pexels-photo-1543756.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")
-          .attr("data-toggle", false)
-
-        $newUser.append($name, $email, $image);
-        $("#outputArea").append($newUser)
-
-      }
-    }
   </script>
 </body>
 
