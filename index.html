@@ -85,26 +85,61 @@ var query = $(this).attr("data-name");
 
             // Creating and storing a div tag
             var queryDiv = $("<div>");
-
             // Creating a paragraph tag with the result item's rating
             var p = $("<p>").text("Rating: " + results[i].rating);
-
             // Creating and storing an image tag
             var queryImage = $("<img>");
+
+              // Grab image and gif in a var
+
+            var gifSource = results[i].images.fixed_height.url;
+            var picSource = results[i].images.fixed_height.url;
             // Setting the src attribute of the image to a property pulled off the result item
             queryImage.attr("src", results[i].images.fixed_height.url);
 
+            queryImage.addClass("queryGiphy");
+            
+            // Set attributes
+
+            queryImage.attr("data-state",)
+            queryImage.attr("")
+            queryImage.attr("")
+            
+            
+            
             // Appending the paragraph and image tag to the queryDiv
             queryDiv.append(p);
             queryDiv.append(queryImage);
+
+
+
+
+
 
             // Prependng the queryDiv to the HTML page in the "#gifs-appear-here" div
             $("#gifs-appear-here").prepend(queryDiv);
           }
         });
     });
+    // Secret Sauce 
+    
 
-// End Class Function
+//     $(".container").on("click", ".img-small", function() {
+//       console.log("clicked");
+//       console.log($(this))
+//       console.log($(this).attr("data-gif"))
+//       console.log($(this).attr("data-toggle"));
+// ​
+//       if ($(this).attr("data-toggle") === "false") {
+//         $(this).attr("src", $(this).attr("data-gif"));
+//         $(this).attr("data-toggle", true);
+//       } else {
+//         $(this).attr("src", $(this).attr("data-still"));
+//         $(this).attr("data-toggle", false);
+//       }
+//     })
+
+
 
 
 function clearArrayInputs () {
