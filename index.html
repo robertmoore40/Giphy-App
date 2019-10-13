@@ -92,8 +92,9 @@ var query = $(this).attr("data-name");
 
               // Grab image and gif in a var
 
-            var gifSource = results[i].images.fixed_height.url;
+            
             var picSource = results[i].images.fixed_height.url;
+            var gifSource = results[i].images.fixed_height.url;
             // Setting the src attribute of the image to a property pulled off the result item
             queryImage.attr("src", results[i].images.fixed_height.url);
 
