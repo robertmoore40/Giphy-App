@@ -26,8 +26,8 @@
     <label for="queryElement-input">Search Term</label>
     <input type="text" id="queryElement-input">
     <input id="add-queryElement" type="submit" value="Add Search Element">
-    <button id="clearInputs">Clear Array</button>
-
+    <!-- <button id="clearInputs">Clear Array</button> -->
+    <input id="clearInputs" type="submit" value="Clear Inputs">
   </div>
   <div class="-buttonHolderContainer">
     <h1>Button Holder</h1>
@@ -201,6 +201,11 @@
         // Write code to grab the text the user types into the input field
         var queryElement = $("#queryElement-input").val().trim();
         // Write code to add the new queryElement into the queryElements array
+
+
+        // Secret Sauce
+        // queryElement.addClass("XYZ");
+
         queryTopic.push(queryElement);
         console.log(queryTopic);
         // The renderButtons function is called, rendering the list of queryElement buttons
